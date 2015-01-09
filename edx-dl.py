@@ -145,7 +145,7 @@ def get_page_contents(url, headers):
     Get the contents of the page at the URL given by url. While making the
     request, we use the headers given in the dictionary in headers.
     """
-    result = urlopen(Request(url, None, headers))
+    result = urlopen(Request(url, None, headers), timeout=60)
     try:
         charset = result.headers.get_content_charset(failobj="utf-8")  # for python3
     except:
@@ -280,7 +280,7 @@ def main():
     post_data = urlencode({'email': args.username, 'password': args.password,
                            'remember': False}).encode('utf-8')
     request = Request(LOGIN_API, post_data, headers)
-    response = urlopen(request)
+    response = urlopen(request, timeout=60)
     resp = json.loads(response.read().decode('utf-8'))
     if not resp.get('success', False):
         print(resp.get('value', "Wrong Email or Password."))
